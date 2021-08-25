@@ -4,7 +4,7 @@ class CreditCardsController < ApplicationController
 
   # GET /credit_cards or /credit_cards.json
   def index
-    @credit_cards = current_user.credit_cards
+    @credit_cards = CreditCard.where("user_id = #{current_user.id} AND kind='#{params[:kind]}'")
   end
 
   # GET /credit_cards/1 or /credit_cards/1.json
@@ -22,7 +22,7 @@ class CreditCardsController < ApplicationController
 
   # POST /credit_cards or /credit_cards.json
   def create
-    @credit_card = CreditCard.new(credit_card_params)
+    @credit_card = CreditCard.new(credit_card_params.merge(user: current_user))
 
     respond_to do |format|
       if @credit_card.save
@@ -65,6 +65,6 @@ class CreditCardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def credit_card_params
-      params.require(:credit_card).permit(:number, :cvv, :name, :month, :year, :user_id)
+      params.require(:credit_card).permit(:number, :cvv, :name, :month, :year, :kind)
     end
 end

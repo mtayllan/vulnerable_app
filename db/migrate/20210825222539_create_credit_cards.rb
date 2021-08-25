@@ -7,6 +7,7 @@ class CreateCreditCards < ActiveRecord::Migration[6.1]
       t.integer :month
       t.integer :year
       t.references :user, null: false, foreign_key: true
+      t.string :kind
 
       t.timestamps
     end
