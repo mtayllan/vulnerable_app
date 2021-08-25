@@ -65,6 +65,13 @@ class CreditCardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def credit_card_params
-      params.require(:credit_card).permit(:number, :cvv, :name, :month, :year, :kind)
+      permited = params.require(:credit_card).permit(:number, :cvv, :name, :month, :year, :kind)
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials[:encrypt_key])
+      permited[:number] = crypt.encrypt_and_sign(permited[:number])
+      permited[:cvv] = crypt.encrypt_and_sign(permited[:cvv])
+      permited[:name] = crypt.encrypt_and_sign(permited[:name])
+      permited[:month] = crypt.encrypt_and_sign(permited[:month])
+      permited[:year] = crypt.encrypt_and_sign(permited[:year])
+      permited
     end
 end
