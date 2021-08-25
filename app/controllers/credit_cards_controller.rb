@@ -1,6 +1,6 @@
 class CreditCardsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_credit_card, only: %i[ show edit update destroy ]
+  before_action :set_credit_card, only: %i[show edit update destroy use]
 
   # GET /credit_cards or /credit_cards.json
   def index
@@ -14,6 +14,18 @@ class CreditCardsController < ApplicationController
   # GET /credit_cards/new
   def new
     @credit_card = CreditCard.new
+  end
+
+  def use
+    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials[:encrypt_key])
+    @credit_card = @credit_card.tap do |card|
+      card.number = crypt.decrypt_and_verify(card[:number])
+      card.cvv = crypt.decrypt_and_verify(card[:cvv])
+      card.name = crypt.decrypt_and_verify(card[:name])
+      card.month = crypt.decrypt_and_verify(card[:month])
+      card.year = crypt.decrypt_and_verify(card[:year])
+    end
+    render :show
   end
 
   # GET /credit_cards/1/edit
