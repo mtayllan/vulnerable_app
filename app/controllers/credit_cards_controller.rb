@@ -4,7 +4,7 @@ class CreditCardsController < ApplicationController
 
   # GET /credit_cards or /credit_cards.json
   def index
-    @credit_cards = CreditCard.where("user_id = #{current_user.id} AND kind='#{params[:kind]}'")
+    @credit_cards = CreditCard.where(user_id: current_user.id, kind: params[:kind])
   end
 
   # GET /credit_cards/1 or /credit_cards/1.json
