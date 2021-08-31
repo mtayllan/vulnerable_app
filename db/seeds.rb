@@ -17,50 +17,52 @@ User.create([
   },
 ])
 
+crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials[:encrypt_key])
+
 CreditCard.create([
   {
     user_id: 1,
-    name: 'Teste Card 1',
-    cvv: '123',
-    number: '5431111111111111',
-    month: 1,
-    year: 2028,
+    name: crypt.encrypt_and_sign('Teste Card 1'),
+    cvv: crypt.encrypt_and_sign('123'),
+    number: crypt.encrypt_and_sign('5431111111111111'),
+    month: crypt.encrypt_and_sign('1'),
+    year: crypt.encrypt_and_sign('2028'),
     kind: 'Crédito'
   },
   {
     user_id: 1,
-    name: 'Teste Card 5',
-    cvv: '123',
-    number: '5431111111111115',
-    month: 5,
-    year: 2025,
+    name: crypt.encrypt_and_sign('Teste Card 2'),
+    cvv: crypt.encrypt_and_sign('123'),
+    number: crypt.encrypt_and_sign('5432221111111111'),
+    month: crypt.encrypt_and_sign('06'),
+    year: crypt.encrypt_and_sign('2025'),
     kind: 'Débito'
   },
   {
     user_id: 2,
-    name: 'Teste Card 2',
-    cvv: '123',
-    number: '5431111111111112',
-    month: 5,
-    year: 2026,
+    name: crypt.encrypt_and_sign('Teste Card 3'),
+    cvv: crypt.encrypt_and_sign('123'),
+    number: crypt.encrypt_and_sign('5431111111111111'),
+    month: crypt.encrypt_and_sign('1'),
+    year: crypt.encrypt_and_sign('2028'),
     kind: 'Crédito'
   },
   {
     user_id: 3,
-    name: 'Teste Card 3',
-    cvv: '123',
-    number: '5431111111111113',
-    month: 12,
-    year: 2027,
+    name: crypt.encrypt_and_sign('Teste Card 4'),
+    cvv: crypt.encrypt_and_sign('123'),
+    number: crypt.encrypt_and_sign('5431111111111111'),
+    month: crypt.encrypt_and_sign('1'),
+    year: crypt.encrypt_and_sign('2028'),
     kind: 'Crédito'
   },
   {
     user_id: 4,
-    name: 'Teste Card 4',
-    cvv: '123',
-    number: '5431111111111114',
-    month: 4,
-    year: 2024,
+    name: crypt.encrypt_and_sign('Teste Card 5'),
+    cvv: crypt.encrypt_and_sign('123'),
+    number: crypt.encrypt_and_sign('5431111111111111'),
+    month: crypt.encrypt_and_sign('1'),
+    year: crypt.encrypt_and_sign('2028'),
     kind: 'Débito'
   }
 ])
